@@ -58,6 +58,7 @@ class RunText(MatrixBase):
                 self.lock.release()
                 print("forcast:")
                 print(forcast)
+                time.sleep(60*5) # 5 minutes
             except Exception as e:
                     print("error:")
                     print(e)
@@ -65,7 +66,7 @@ class RunText(MatrixBase):
                     self.lock.acquire()
                     self.forcast = None
                     self.lock.release()
-            time.sleep(60*5) # 5 minutes
+                    time.sleep(60) # 1 minutes
 
 
 
@@ -84,16 +85,19 @@ class RunText(MatrixBase):
                 print(self.updatedAt)
                 print(prices)
                 errors = 0
+                time.sleep(60*5) # 5 minutes
             except Exception as e:
-                    errors +=1
-                    print("error:")
-                    print(e)
-                    print(traceback.format_exc())
-                    if errors > 1:
-                        self.lock.acquire()
-                        self.prices = [("error getting prices","error")]
-                        self.lock.release()
-            time.sleep(60*5.0001)
+                errors +=1
+                print("error:")
+                print(e)
+                print(traceback.format_exc())
+                if errors > 1:
+                    self.lock.acquire()
+                    self.prices = [("error getting prices","error")]
+                    self.lock.release()
+                    time.sleep(60*5) # 5 minutes
+                else:
+                    time.sleep(60) # 1 minutes
 
 
     def run(self):
@@ -107,7 +111,7 @@ class RunText(MatrixBase):
         while True:
             self.pos -= 1
             self.draw()
-            time.sleep(0.015)
+            time.sleep(0.01)
             self.canvas = self.matrix.SwapOnVSync(self.canvas)
 
     def draw(self):
@@ -150,9 +154,10 @@ class RunText(MatrixBase):
 
             high=self.forcast['forcast']['high']
             high_f = "{:.1f}".format(high)
-            f_humidity = self.forcast['forcast']['humidity']
-            if f_humidity >=30:
-                forcast = f'{high_f}° {f_humidity}%'
+            precipitation = self.forcast['forcast']['precipitation_probability'] * 100
+            precipitation_f = "{:.0f}".format(precipitation)
+            if precipitation >=5:
+                forcast = f'{high_f}° {precipitation_f}% rain'
             else:
                 forcast = f'{high_f}°'
 

@@ -20,6 +20,8 @@ import argparse
 import time
 import sys
 import os
+import signal
+
  #
  # sudo utils/text-scroller -f fonts/texgyre-27.bdf  -C 255,0,0 -s20 "The quick brown fox jumps over the lazy dog" -l -1 --led-rows=32 --led-cols=64 --led-chain=2 --led-slowdown-gpio=4 --led-multiplexing=1  --led-no-hardware-pulse --led-gpio-mapping=adafruit-hat  -s2
  #
@@ -90,14 +92,27 @@ class MatrixBase(object):
 
         self.matrix = RGBMatrix(options = options)
 
-        try:
-            # Start loop
-            print("Press CTRL-C to stop")
-            self.run()
-        except (KeyboardInterrupt, SystemExit):
+        def signal_handler(sig, frame):
             print("Exiting\n")
             self.matrix.Clear()
             sys.exit(0)
 
+        signal.signal(signal.SIGTERM, signal_handler)
+        signal.signal(signal.SIGHUP, signal_handler)
+        signal.signal(signal.SIGCHLD, signal_handler)
+        signal.signal(signal.SIGABRT, signal_handler)
+        signal.signal(signal.SIGINT, signal_handler)
+        print("Press CTRL-C to stop")
+        self.run()
+        signal.pause()
+
+        # try:
+        #     # Start loop
+        #     print("Press CTRL-C to stop")
+        #     self.run()
+        # except (KeyboardInterrupt, SystemExit):
+        #     signal_handler()
+
 
         return True
+

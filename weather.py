@@ -28,6 +28,9 @@ class Weather(object):
         print(current)
         print(current)
         print(forcast)
+        print("precipitation_probability",forcast.precipitation_probability)
+        print("rain",forcast.rain)
+        print("snow",forcast.snow)
 
         current_icon_name = current.weather_icon_name
         current_icon = self.getIcon(current_icon_name)
@@ -51,6 +54,7 @@ class Weather(object):
                 'day':forcast_temp.get('day', None),
                 'night':forcast_temp.get('night', None),
                 'humidity':forcast.humidity,
+                'precipitation_probability':forcast.precipitation_probability,
                 'status':forcast.status,
                 'detail':forcast.detailed_status,
             }
