@@ -14,6 +14,7 @@ pp = pprint.PrettyPrinter(indent=4)
 # MOB: 7878
 # FTT: 4195
 # BEAN: 12503
+# GOLD: 3575
 
 
 class Crypto(object):
@@ -21,8 +22,8 @@ class Crypto(object):
         self.url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
         self.parameters = {
           'convert':'USD',
-          # 'symbol':'BTC,ETH,SOL,MOB'
-          'id':'1,1027,5426,7878,4195,12503'
+          # 'symbol':'BTC,ETH,SOL,FTT,GOLD'
+          'id':'1,1027,5426,4195,3575'
         }
         self.headers = {
           'Accepts': 'application/json',
@@ -38,7 +39,7 @@ class Crypto(object):
 
         data = json.loads(response.text)
 
-        watched_tickers = {"BTC":"1", "ETH":"1027", "SOL":"5426", "MOB":"7878", "FTT": "4195", "BEAN":"12503"}
+        watched_tickers = {"BTC":"1", "ETH":"1027", "SOL":"5426", "FTT":"4195","GOLD":"3575"}
         reported_tickers = {}
         crypto_list = data["data"]
 
@@ -63,8 +64,6 @@ class Crypto(object):
                 trend_status = "up"
 
             status_string = reported_ticker + ": " + "$" + "{:.2f}".format(values["price"]) + " "  + trend + " {:.2f}".format(values["change"]) + "%  "
-            if reported_ticker == "BEAN":
-                status_string = reported_ticker + ": " + "$" + "{:.4f}".format(values["price"]) + " "  + trend + " {:.2f}".format(values["change"]) + "%  "
             status_tuples.append((status_string, trend_status))
            #  print(status_string)
         return(status_tuples)
