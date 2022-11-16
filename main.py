@@ -14,13 +14,13 @@ from math import floor
 
 black = graphics.Color(0, 0, 0)
 white = graphics.Color(255, 255, 255)
-darkRed = graphics.Color(102, 0, 0)
+darkRed = graphics.Color(102, 32, 32)
 grey = graphics.Color(96, 96, 96)
 lightBlue = graphics.Color(108, 119, 122)
 darkGrey = graphics.Color(30, 30, 30)
-red = graphics.Color(255, 0, 0)
-green = graphics.Color(0, 255, 0)
-blue = graphics.Color(0, 0, 255)
+red = graphics.Color(255, 32, 32)
+green = graphics.Color(32, 255, 32)
+blue = graphics.Color(21, 65, 255)
 font = graphics.Font()
 font.LoadFont("/home/pi/rpi-rgb-led-matrix/fonts/9x18.bdf")
 
@@ -141,25 +141,25 @@ class RunText(MatrixBase):
             temp = self.forcast['current']['temp']
             temp_f = "{:.1f}".format(temp)
             humidity = self.forcast['current']['humidity']
-            if humidity >=35:
-                weather = f'{temp_f}° {humidity}%'
-            else:
-                weather = f'{temp_f}°'
+            #if humidity >=35:
+            weather = f'{temp_f}° {humidity}%'
+            #else:
+            #    weather = f'{temp_f}°'
 
             color = lightBlue
             if temp > 85:
                 color = red
-            elif temp < 65:
+            elif temp < 64:
                 color = blue
 
             high=self.forcast['forcast']['high']
             high_f = "{:.1f}".format(high)
             precipitation = self.forcast['forcast']['precipitation_probability'] * 100
             precipitation_f = "{:.0f}".format(precipitation)
-            if precipitation >=5:
-                forcast = f'{high_f}° {precipitation_f}% rain'
-            else:
-                forcast = f'{high_f}°'
+            #if precipitation >=5:
+            forcast = f'{high_f}° {precipitation_f}% rain'
+            #else:
+            #    forcast = f'{high_f}°'
 
             graphics.DrawText(self.canvas, statusFont, 17,  8, color, weather)
             graphics.DrawText(self.canvas, statusFont, 17,  16, darkGrey, forcast)
