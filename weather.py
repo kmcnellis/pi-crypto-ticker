@@ -8,9 +8,11 @@ import requests
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects, HTTPError
 import keys
+import os
 # ---------- FREE API KEY examples ---------------------
 
 location = {"latitude":30.2572506, "longitude":-97.760047} # Austin,TX
+script_dir = os.path.dirname(__file__)
 
 class Weather(object):
     def __init__(self, *args, **kwargs):
@@ -61,6 +63,7 @@ class Weather(object):
         }
     def getIcon(self, icon_name):
         path = f'icons/{icon_name}.png'
+        path = os.path.join(script_dir, path)
         return Image.open(path).convert('RGB')
         # if icon_name in self.icons:
         #     icon = self.icons[icon_name]

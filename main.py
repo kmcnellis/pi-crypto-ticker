@@ -95,7 +95,8 @@ class RunText(MatrixBase):
                     self.lock.acquire()
                     self.prices = [("error getting prices","error")]
                     self.lock.release()
-                    time.sleep(60*5) # 5 minutes
+                    #time.sleep(60*5) # 5 minutes
+                    time.sleep(60)
                 else:
                     time.sleep(60) # 1 minutes
 
