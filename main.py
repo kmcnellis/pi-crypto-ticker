@@ -10,7 +10,9 @@ from datetime import datetime
 from datetime import timedelta
 import traceback
 from math import floor
+import os
 
+script_dir = os.path.dirname(__file__)
 
 black = graphics.Color(0, 0, 0)
 white = graphics.Color(255, 255, 255)
@@ -21,11 +23,13 @@ darkGrey = graphics.Color(30, 30, 30)
 red = graphics.Color(255, 32, 32)
 green = graphics.Color(32, 255, 32)
 blue = graphics.Color(21, 65, 255)
+
+font_path = os.path.join(script_dir, "fonts")
 font = graphics.Font()
-font.LoadFont("/home/pi/rpi-rgb-led-matrix/fonts/9x18.bdf")
+font.LoadFont(os.path.join(font_path, "9x18.bdf"))
 
 statusFont = graphics.Font()
-statusFont.LoadFont("/home/pi/rpi-rgb-led-matrix/fonts/5x8.bdf")
+statusFont.LoadFont(os.path.join(font_path, "5x8.bdf"))
 
 textColor = white
 dateformat= "%m/%d %H:%M"

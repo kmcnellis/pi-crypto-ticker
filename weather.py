@@ -9,27 +9,30 @@ from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects, HTTPError
 import keys
 import os
-# ---------- FREE API KEY examples ---------------------
+from pyowm.utils.config import get_default_config_for_subscription_type
+from pyowm.utils.config import get_default_config_for_proxy
 
 location = {"latitude":30.2572506, "longitude":-97.760047} # Austin,TX
 script_dir = os.path.dirname(__file__)
 
 class Weather(object):
     def __init__(self, *args, **kwargs):
-        owm = OWM(keys.owm_key)
+        config_dict = get_default_config_for_subscription_type('free')
+        owm = OWM(keys.owm_key,config_dict)
         self.mgr = owm.weather_manager()
+        self.mgr.http_client.http = requests
+        # Pip isn't yet updated (https://github.com/csparpa/pyowm/blob/master/pyowm/weatherapi30/uris.py#L5)
+        self.mgr.http_client.root_uri = "openweathermap.org/data/3.0"
         self.icons = {}
         self.image_url =  "http://openweathermap.org/img/wn/"
 
     def get(self):
         one_call = self.mgr.one_call(lat=location["latitude"], lon=location["longitude"], exclude='minutely,hourly,alerts', units='imperial')
+        print(one_call)
         current = one_call.current
         current_temp = current.temperature()
         forcast = one_call.forecast_daily[0]
         forcast_temp = forcast.temperature()
-        print(current)
-        print(current)
-        print(forcast)
         print("precipitation_probability",forcast.precipitation_probability)
         print("rain",forcast.rain)
         print("snow",forcast.snow)
