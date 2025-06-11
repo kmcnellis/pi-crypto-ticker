@@ -24,8 +24,8 @@ class Crypto(object):
         self.url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
         self.parameters = {
           'convert':'USD',
-          # 'symbol':'SUSDe,BTC,ETH,SOL,GOLD,PAXG,SILVER'
-          'id':'29471,1,1027,5426,3575,4705,32419'
+          # 'symbol':'JUP,BTC,ETH,SOL,GOLD,PAXG'
+          'id':'29210,1,1027,5426,3575,4705'
             
           #'id':'29210,1,1027,5426'
             
@@ -44,7 +44,7 @@ class Crypto(object):
 
         data = json.loads(response.text)
 
-        watched_tickers = {"SUSDe":"29471","BTC":"1", "ETH":"1027", "SOL":"5426","PAXG":"4705","SILVER":"32149"}
+        watched_tickers = {"JUP":"29210","BTC":"1", "ETH":"1027", "SOL":"5426","GOLD":"3575","PAXG":"4705"}
         reported_tickers = {}
         crypto_list = data["data"]
 
