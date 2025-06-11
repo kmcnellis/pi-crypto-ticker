@@ -38,7 +38,7 @@ timeformat= "%H:%M"
 class RunText(MatrixBase):
     def __init__(self, *args, **kwargs):
         super(RunText, self).__init__(*args, **kwargs)
-        self.parser.add_argument("-i", "--image", help="The image to display", default="/home/pi/rpi-rgb-led-matrix/examples-api-use/runtext.ppm")
+        #self.parser.add_argument("-i", "--image", help="The image to display", default="/home/pi/rpi-rgb-led-matrix/examples-api-use/runtext.ppm")
         self.lock = threading.Lock()
         self.prices = [("loading....","status")]
         self.forcast = None
@@ -99,16 +99,15 @@ class RunText(MatrixBase):
                     self.lock.acquire()
                     self.prices = [("error getting prices","error")]
                     self.lock.release()
-                    #time.sleep(60*5) # 5 minutes
                     time.sleep(60)
                 else:
                     time.sleep(60) # 1 minutes
 
 
     def run(self):
-        if not 'image' in self.__dict__:
-            self.image = Image.open(self.args.image).convert('RGB')
-        self.image.resize((self.matrix.width, self.matrix.height), Image.ANTIALIAS)
+#        if not 'image' in self.__dict__:
+ #           self.image = Image.open(self.args.image).convert('RGB')
+  #      self.image.resize((self.matrix.width, self.matrix.height), Image.ANTIALIAS)
         self.canvas = self.matrix.CreateFrameCanvas()
 
         self.pos = self.canvas.width
@@ -146,10 +145,7 @@ class RunText(MatrixBase):
             temp = self.forcast['current']['temp']
             temp_f = "{:.1f}".format(temp)
             humidity = self.forcast['current']['humidity']
-            #if humidity >=35:
             weather = f'{temp_f}° {humidity}%'
-            #else:
-            #    weather = f'{temp_f}°'
 
             color = lightBlue
             if temp > 85:
@@ -161,17 +157,11 @@ class RunText(MatrixBase):
             high_f = "{:.1f}".format(high)
             precipitation = self.forcast['forcast']['precipitation_probability'] * 100
             precipitation_f = "{:.0f}".format(precipitation)
-            #if precipitation >=5:
             forcast = f'{high_f}° {precipitation_f}% rain'
-            #else:
-            #    forcast = f'{high_f}°'
-
             graphics.DrawText(self.canvas, statusFont, 17,  8, color, weather)
             graphics.DrawText(self.canvas, statusFont, 17,  16, darkGrey, forcast)
             self.canvas.SetImage(self.forcast['current']['icon'], 0, 0, unsafe=False)
-            # self.canvas.SetImage(self.image, -self.pos)
 
-        # graphics.DrawLine(self.canvas, 0, 15, self.matrix.width, 15, darkGrey)
         now = datetime.now()
         dt_string = now.strftime(dateformat)
         graphics.DrawText(self.canvas, statusFont, self.matrix.width-len(dt_string*5)-1, 8, lightBlue, dt_string)
@@ -200,14 +190,3 @@ if __name__ == "__main__":
     if (not run_text.process()):
         run_text.print_help()
 
-
-    r = requests.get("https://api.coinmarketcap.com/v1/ticker/")
-    data = r.json()
-    print(data)
-    # x = PrettyTable()
-    # x.field_names = [ "Crypto Name", "Symbol", "Price in USD"]
-    #
-    # for crypto in data:
-    #     x.add_row([ crypto['name'], crypto['symbol'], crypto['price_usd'] ])
-    #
-    # print(x)
